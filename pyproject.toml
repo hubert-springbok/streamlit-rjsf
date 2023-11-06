@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "streamlit-rjsf"
+version = "0.1.0"
+description = "A Streamlit component to render web forms based on jsonschema, using rjsf"
+authors = ["Hubert Bereś <hubert@springbok.ai>"]
+license = "MIT"
+readme = "README.md"
+
+include = [
+    { path = "streamlit_rjsf/**/*.py" },
+    { path = "streamlit_rjsf/build/**/*" },
+]
+
+exclude = [{ path = "streamlit_rjsf/frontend" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+streamlit = "^1.28.1"
+jsonschema = "^4.19.2"
+pydantic = "^2.4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
