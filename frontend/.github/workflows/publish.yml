@@ -1,0 +1,44 @@
+# This workflow will upload a Python Package using Twine when a release is created
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#publishing-to-package-registries
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Upload Python Package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+
+      - name: Build node.js package
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+        run: |-
+          cd frontend
+          npm ci
+          npm run build
+      - name: Install poetry
+        run: |-
+          pip install poetry
+
+      - name: Build and publish to PyPi
+        env:
+          PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: |-
+          poetry build
+          poetry publish
