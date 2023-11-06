@@ -20,6 +20,10 @@ jsonschema = "^4.19.2"
 pydantic = "^2.4.2"
 
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+ruff = "^0.1.4"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

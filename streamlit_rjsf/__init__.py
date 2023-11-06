@@ -19,11 +19,8 @@ if bool(os.environ.get("USE_DEBUG_SERVER", False)):
 else:
     # Serve static build files
     here = Path(__file__).parent.absolute()
-    build_dir = here / "frontend/build"
-    assert (build_dir / "index.html").is_file(), (
-        "Component not built! "
-        "Run `cd react_jsonform_component/frontend && npm run build` first!"
-    )
+    build_dir = here / "build"
+    assert (build_dir / "index.html").is_file(), "Frontend component not built!"
     _component_func = components.declare_component(COMPONENT_NAME, path=str(build_dir))
 
 
