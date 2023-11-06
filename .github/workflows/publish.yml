@@ -21,16 +21,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
 
-      - name: Build node.js package
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "18.x"
+      - name: Build node.js package
         run: |-
           cd frontend
           npm ci
           npm run build
+      - uses: actions/setup-python@v4
       - name: Install poetry
         run: |-
           pip install poetry
