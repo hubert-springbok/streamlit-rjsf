@@ -1,0 +1,47 @@
+name: Test
+# Adopted from: https://github.com/Ddedalus/syringe-pump/blob/main/.github/workflows/test.yml
+
+on:
+  # run on open merge requests and on main branch
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "poetry"
+      - name: Build node.js package
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: npm
+        run: |-
+          cd frontend
+          npm ci
+          npm run build
+      - name: Install poetry
+        run: |
+          pip install poetry
+      - name: Install Dependencies
+        run: poetry install --with dev
+
+      - name: isort
+        run: poetry run isort . --check-only --diff
+
+      - name: black
+        run: poetry run black . --check
+
+      - name: pytest
+        run: poetry run pytest --offline --motion --cov=syringe_pump
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
